@@ -32,7 +32,9 @@ This solution follows **Clean Architecture** principles with clear separation of
      "DefaultConnection": "Server=(localdb)\\mssqllocaldb;Database=ProductGrade;Trusted_Connection=True;"
    }
    ```
-3. Database update and seeding:
+3. Run the application
+ 
+4. Database update and seeding:
    ```bash
    The database will be automatically created when you first run the application and some seeding will be added to Products.
    ```
