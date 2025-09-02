@@ -10,8 +10,6 @@ This project is an ASP.NET Core Web API for a simple e-commerce platform. It pro
 - **Models/**: Entity classes (Product, Order, OrderItem)
 - **Data/**: DbContext and Migrations
 - **Repositories/**: Data access layer (optional)
-- **Tests/**: Unit tests
-
 ---
 
 ## 3. Setup Instructions
