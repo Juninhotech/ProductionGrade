@@ -6,10 +6,12 @@ This project is an ASP.NET Core Web API for a simple e-commerce platform. It pro
 ---
 
 ## 2. Project Structure
-- **Controllers/**: API endpoints (Products, Orders)
-- **Models/**: Entity classes (Product, Order, OrderItem)
-- **Data/**: DbContext and Migrations
-- **Repositories/**: Data access layer (optional)
+This solution follows **Clean Architecture** principles with clear separation of concerns:
+
+- **Core Layer**: Domain entities, interfaces, and business exceptions
+- **Application Layer**: Business logic, services, DTOs, and mappings  
+- **Infrastructure Layer**: Data access, repositories, and external concerns
+- **API Layer**: Controllers, middleware, and presentation concerns
 ---
 
 ## 3. Setup Instructions
