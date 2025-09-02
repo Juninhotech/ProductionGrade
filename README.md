@@ -25,23 +25,17 @@ This solution follows **Clean Architecture** principles with clear separation of
 1. Clone the repository:
    ```bash
   https://github.com/Juninhotech/ProductionGrade.git
-   ```
+   
 2. Update the connection string in `appsettings.json`:
    ```json
    "ConnectionStrings": {
      "DefaultConnection": "Server=(localdb)\\mssqllocaldb;Database=ProductGrade;Trusted_Connection=True;"
    }
    ```
-3. Run migrations and update database:
+3. Database update and seeding:
    ```bash
-   dotnet ef migrations add InitialCreate
-   dotnet ef database update
+   The database will be automatically created when you first run the application and some seeding will be added to Products.
    ```
-4. Run the application:
-   ```bash
-   dotnet run
-   ```
-
 ---
 
 ## 4. Middleware
