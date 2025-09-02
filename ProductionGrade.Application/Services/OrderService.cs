@@ -1,5 +1,7 @@
-﻿using ProductionGrade.Application.DTOs;
+﻿using Microsoft.Extensions.Logging;
+using ProductionGrade.Application.DTOs;
 using ProductionGrade.Application.IServices;
+using ProductionGrade.Application.Mappings;
 using ProductionGrade.Core.Entities;
 using ProductionGrade.Core.Exceptions;
 using ProductionGrade.Core.Interfaces;
@@ -14,12 +16,12 @@ namespace ProductionGrade.Application.Services
     public class OrderService : IOrderService
     {
         private readonly IUnitOfWork _unitOfWork;
-        //private readonly ILogger<OrderService> _logger;
+        private readonly ILogger<OrderService> _logger;
 
-        public OrderService(IUnitOfWork unitOfWork, /*ILogger<OrderService> logger*/)
+        public OrderService(IUnitOfWork unitOfWork, ILogger<OrderService> logger)
         {
             _unitOfWork = unitOfWork;
-            //_logger = logger;
+            _logger = logger;
         }
 
         public async Task<OrderDto> CreateOrderAsync(CreateOrderDto createOrderDto)
@@ -28,13 +30,10 @@ namespace ProductionGrade.Application.Services
 
             try
             {
-                // Get product IDs from the order
                 var productIds = createOrderDto.Items.Select(i => i.ProductId).ToList();
 
-                // Get current stock quantities with row-level locking
                 var currentStocks = await _unitOfWork.Products.GetStockQuantitiesAsync(productIds);
 
-                // Verify all products exist and have sufficient stock
                 var stockUpdates = new Dictionary<int, int>();
                 var orderItems = new List<OrderItem>();
                 decimal totalAmount = 0;
@@ -51,10 +50,8 @@ namespace ProductionGrade.Application.Services
                         throw new InsufficientStockException(product?.Name ?? "Unknown", item.Quantity, availableStock);
                     }
 
-                    // Prepare stock update
                     stockUpdates[item.ProductId] = availableStock - item.Quantity;
 
-                    // Get product for pricing
                     var productDetails = await _unitOfWork.Products.GetByIdAsync(item.ProductId);
                     var itemTotal = productDetails!.Price * item.Quantity;
                     totalAmount += itemTotal;
@@ -67,7 +64,6 @@ namespace ProductionGrade.Application.Services
                     });
                 }
 
-                // Create the order
                 var order = new Order
                 {
                     CustomerEmail = createOrderDto.CustomerEmail,
@@ -76,16 +72,14 @@ namespace ProductionGrade.Application.Services
                     OrderItems = orderItems
                 };
 
-                // Update stock quantities
                 await _unitOfWork.Products.UpdateStockAsync(stockUpdates);
 
-                // Save the order
                 var createdOrder = await _unitOfWork.Orders.CreateAsync(order);
                 await _unitOfWork.SaveChangesAsync();
 
                 await _unitOfWork.CommitTransactionAsync();
 
-                //_logger.LogInformation("Order {OrderId} created successfully for customer {CustomerEmail}",
+                _logger.LogInformation("Order {OrderId} created successfully for customer {CustomerEmail}",
                 createdOrder.Id, createOrderDto.CustomerEmail);
 
                 return OrderMapper.ToDto(createdOrder);

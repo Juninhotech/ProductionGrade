@@ -1,5 +1,6 @@
 ﻿using ProductionGrade.Application.DTOs;
 using ProductionGrade.Application.IServices;
+using ProductionGrade.Application.Mappings;
 using ProductionGrade.Core.Exceptions;
 using ProductionGrade.Core.Interfaces;
 using System;
@@ -10,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace ProductionGrade.Application.Services
 {
-    internal class ProductService : IProductService
+    public class ProductService : IProductService
     {
         private readonly IUnitOfWork _unitOfWork;
 
