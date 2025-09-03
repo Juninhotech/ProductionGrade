@@ -25,16 +25,21 @@ This solution follows **Clean Architecture** principles with clear separation of
 1. Clone the repository:
    ```bash
   https://github.com/Juninhotech/ProductionGrade.git
+
+2. Restore packages:
+   ```bash
+   dotnet restore
+   ```
    
-2. Update the connection string in `appsettings.json`:
+3. Update the connection string in `appsettings.json`:
    ```json
    "ConnectionStrings": {
      "DefaultConnection": "Server=(localdb)\\mssqllocaldb;Database=ProductGrade;Trusted_Connection=True;"
    }
    ```
-3. Run the application
+4. Run the application
  
-4. Database update and seeding:
+5. Database update and seeding:
    ```bash
    The database will be automatically created when you first run the application and some seeding will be added to Products.
    ```
